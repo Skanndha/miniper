@@ -24,7 +24,6 @@ module NetworkInterface (
     );
 
     Packetizer pktzr (
-        .sram_data_in(sram_data_in),
         .HF(HF),
         .BF(BF),
         .TF(TF),

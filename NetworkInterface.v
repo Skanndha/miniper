@@ -33,13 +33,13 @@ module NetworkInterface (
         .write_enable(write_enable)
     );
 
-    AddressCalculator addr_calc (
-        .HF(fifo_data_out),
-        .clk(clk),
-        .reset(reset),
-        .src_addr(src_addr),
-        .dest_addr(dest_addr)
-    );
+    // AddressCalculator addr_calc (
+    //     .HF(fifo_data_out),
+    //     .clk(clk),
+    //     .reset(reset),
+    //     .src_addr(src_addr),
+    //     .dest_addr(dest_addr)
+    // );
 
     DePacketizer dpktzr (
         .HF(fifo_data_out),

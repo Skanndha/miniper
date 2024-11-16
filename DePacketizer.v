@@ -1,7 +1,8 @@
 module DePacketizer (
-    input wire [255:0] HF,            // 256-bit Head Flit input
-    input wire [255:0] BF,            // 256-bit Body Flit input
-    input wire [255:0] TF,            // 256-bit Tail Flit input
+    // input wire [255:0] HF,            // 256-bit Head Flit input
+    // input wire [255:0] BF,            // 256-bit Body Flit input
+    // input wire [255:0] TF,            // 256-bit Tail Flit input
+    input wire [47:0] flitout,
     input wire clk,                   // Main clock signal
     input wire reset,                 // Reset signal
     output reg [15:0] data_out,       // Reconstructed output data

@@ -7,8 +7,8 @@ module NetworkInterface (
     output wire packet_end            // End of packet signal
 );
 
-    wire [255:0] flit_out;
-    wire [255:0] fifo_data_out;
+    wire [47:0] flit_out;
+    wire [47:0] fifo_data_out;
     wire [7:0] src_addr, dest_addr;
     wire write_enable, read_enable, fifo_full, fifo_empty;
 

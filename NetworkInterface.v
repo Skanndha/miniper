@@ -8,7 +8,7 @@ module NetworkInterface (
 );
 
     wire [47:0] flit_out;
-    wire [47:0] fifo_data_out;
+    wire [15:0] fifo_data_out;
     wire [7:0] src_addr, dest_addr;
     wire write_enable, read_enable, fifo_full, fifo_empty;
 
@@ -42,9 +42,10 @@ module NetworkInterface (
     // );
 
     DePacketizer dpktzr (
-        .HF(fifo_data_out),
-        .BF(fifo_data_out),
-        .TF(fifo_data_out),
+        // .HF(fifo_data_out),
+        // .BF(fifo_data_out),
+        // .TF(fifo_data_out),
+        .flitoutde(fifo_data_out),
         .clk(clk),
         .reset(reset),
         .data_out(data_out),

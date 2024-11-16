@@ -17,7 +17,7 @@ module Packetizer (
             write_enable <= 0;
            //state
         end else begin
-            flit_out <= {HF, BF. TF};
+           flit_out <= {TF, BF. HF};
             write_enable <= 1;
             // case (state)
             //     0: begin

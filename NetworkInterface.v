@@ -25,8 +25,9 @@ module NetworkInterface (
 
     Packetizer pktzr (
         .sram_data_in(sram_data_in),
-        .src_addr(src_addr),
-        .dest_addr(dest_addr),
+        .HF(HF),
+        .BF(BF),
+        .TF(TF),
         .clk(clk),
         .reset(reset),
         .flit_out(flit_out),

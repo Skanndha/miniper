@@ -14,8 +14,8 @@ module DePacketizer (
             data_out <= 16'b0;
             packet_end <= 1'b0;
         end else begin
-            data_out <= flitoutde[];
-            packet_end <= (TF[15:0] == 16'hFFFF);
+            data_out <= flitoutde[31:16];
+            packet_end <= (TF[47:32] == 16'hFFFF);
         end
     end
 endmodule

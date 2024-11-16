@@ -3,13 +3,13 @@ module FIFO (
     input wire reset,                 // Reset signal
     input wire write_enable,          // Write enable for FIFO
     input wire read_enable,           // Read enable for FIFO
-    input wire [255:0] data_in,       // 256-bit input data
-    output reg [255:0] data_out,      // 256-bit output data
+    input wire [47:0] data_in,       // 256-bit input data
+    output reg [47:0] data_out,      // 256-bit output data
     output reg full,                  // FIFO full flag
     output reg empty                  // FIFO empty flag
 );
 
-    reg [255:0] buffer [3:0];         // FIFO buffer with depth of 4
+    reg [47:0] buffer [3:0];         // FIFO buffer with depth of 4
     reg [1:0] write_ptr = 0;          // Write pointer
     reg [1:0] read_ptr = 0;           // Read pointer
     integer count = 0;

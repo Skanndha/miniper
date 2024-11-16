@@ -2,7 +2,7 @@ module DePacketizer (
     // input wire [255:0] HF,            // 256-bit Head Flit input
     // input wire [255:0] BF,            // 256-bit Body Flit input
     // input wire [255:0] TF,            // 256-bit Tail Flit input
-    input wire [47:0] flitout,
+    input wire [47:0] flitoutde,
     input wire clk,                   // Main clock signal
     input wire reset,                 // Reset signal
     output reg [15:0] data_out,       // Reconstructed output data
@@ -14,7 +14,7 @@ module DePacketizer (
             data_out <= 16'b0;
             packet_end <= 1'b0;
         end else begin
-            data_out <= BF[255:240];
+            data_out <= flitoutde[255:240];
             packet_end <= (TF[15:0] == 16'hFFFF);
         end
     end

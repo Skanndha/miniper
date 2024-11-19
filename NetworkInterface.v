@@ -8,21 +8,26 @@ module NetworkInterface (
 );
 
     wire [47:0] flit_out;
-    wire [15:0] fifo_data_out;
+    wire [47:0] fifo_data_out;   // Corrected to 48 bits
     wire [7:0] src_addr, dest_addr;
     wire write_enable, read_enable, fifo_full, fifo_empty;
 
+    // Define HF, BF, and TF signals
+    wire [15:0] HF, BF, TF;
+
+    // Instantiate FIFO
     FIFO fifo (
         .clk(clk),
         .reset(reset),
         .write_enable(write_enable),
         .read_enable(read_enable),
         .data_in(flit_out),
-        .data_out(fifo_data_out),
+        .data_out(fifo_data_out),   // 48-bit width matches
         .full(fifo_full),
         .empty(fifo_empty)
     );
 
+    // Instantiate Packetizer
     Packetizer pktzr (
         .HF(HF),
         .BF(BF),
@@ -33,25 +38,16 @@ module NetworkInterface (
         .write_enable(write_enable)
     );
 
-    // AddressCalculator addr_calc (
-    //     .HF(fifo_data_out),
-    //     .clk(clk),
-    //     .reset(reset),
-    //     .src_addr(src_addr),
-    //     .dest_addr(dest_addr)
-    // );
-
+    // Instantiate DePacketizer
     DePacketizer dpktzr (
-        // .HF(fifo_data_out),
-        // .BF(fifo_data_out),
-        // .TF(fifo_data_out),
-        .flitoutde(fifo_data_out),
+        .flitoutde(fifo_data_out),  // Corrected to 48 bits
         .clk(clk),
         .reset(reset),
-        .data_out(data_out),
+        .data_out(data_out),        // Outputs 16-bit data
         .packet_end(packet_end)
     );
 
+    // Instantiate ControlModule
     ControlModule ctrl (
         .clk(clk),
         .reset(reset),

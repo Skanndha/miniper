@@ -2,18 +2,16 @@
 
 module NetworkInterface_tb;
 
-    // Inputs
-    reg [15:0] sram_data_in;
-    reg clk;
-    reg reset;
-    reg clk_div_8_to_NI;
-
-    // Outputs
-    wire [15:0] data_out;
-    wire packet_end;
-
-    // Instantiate the Network Interface module
-    NetworkInterface uut (
+    // Testbench signals
+    reg [15:0] sram_data_in;      // Input data from SRAM
+    reg clk;                      // Clock signal
+    reg reset;                    // Reset signal
+    reg clk_div_8_to_NI;          // Synchronization clock
+    wire [15:0] data_out;         // Output data from De-packetizer
+    wire packet_end;              // End of packet signal
+    
+    // Instantiate the NetworkInterface module
+    NetworkInterface DUT (
         .sram_data_in(sram_data_in),
         .clk(clk),
         .reset(reset),
@@ -22,64 +20,64 @@ module NetworkInterface_tb;
         .packet_end(packet_end)
     );
 
-    // Clock generation (main clock)
+    // Clock generation
     initial begin
         clk = 0;
-        forever #5 clk = ~clk; // 100 MHz clock
+        forever #5 clk = ~clk;   // 100 MHz clock (10 ns period)
     end
 
-    // Clock divider simulation for clk_div_8_to_NI
     initial begin
         clk_div_8_to_NI = 0;
-        forever #40 clk_div_8_to_NI = ~clk_div_8_to_NI; // Slower clock
+        forever #40 clk_div_8_to_NI = ~clk_div_8_to_NI;   // Divided clock (80 ns period)
     end
 
-    // Stimulus process
+    // Stimulus generation
     initial begin
-        // Initialize inputs
-        sram_data_in = 16'b0;
+        // Reset all signals
         reset = 1;
+        sram_data_in = 16'h0000;
+        #20;
+        
+        reset = 0;              // Release reset
+        #10;
+        
+        // Test Packetizer with various inputs
+        sram_data_in = 16'hAAAA; // Set SRAM input
+        #10;
 
-        // Apply reset
+        sram_data_in = 16'hBBBB; // Update SRAM input
+        #10;
+        
+        sram_data_in = 16'hCCCC; // Update SRAM input again
+        #10;
+        
+        // Let the packetizer and FIFO interact
+        sram_data_in = 16'hDDDD;
+        #50;
+
+        // Trigger reset to observe behavior
+        reset = 1;
         #20;
         reset = 0;
-        
-        // Start providing data to SRAM input
-        #10;
-        sram_data_in = 16'hA5A5; // Arbitrary test data
-        #10;
-        sram_data_in = 16'h5A5A;
-        #10;
-        sram_data_in = 16'h1234;
-        #10;
-        sram_data_in = 16'h5678;
 
-        // Wait for packet processing
+        // Test with different data patterns
+        sram_data_in = 16'h1111;
+        #10;
+        
+        sram_data_in = 16'h2222;
+        #10;
+
+        // Check final packet end signal
         #100;
-        sram_data_in = 16'hFFFF; // Tail marker example data
 
-        // Monitor outputs
-        #200;
-        
-        // Further testing with different data patterns
-        sram_data_in = 16'h4321;
-        #10;
-        sram_data_in = 16'h8765;
-        #10;
-        sram_data_in = 16'hABCD;
-        #10;
-        sram_data_in = 16'hEF01;
-
-        // Wait for the processing to complete
-        #300;
-
-        // End the simulation
+        // End simulation
         $finish;
     end
 
-    // Monitor the output signals
+    // Monitoring outputs
     initial begin
-        $monitor("Time=%0t | Data Out=%h | Packet End=%b", $time, data_out, packet_end);
+        $dumpfile("dump.vcd");
+        $dumpvars();
     end
 
 endmodule

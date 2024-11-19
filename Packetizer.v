@@ -1,8 +1,8 @@
 module Packetizer (
    // 16-bit input data from SRAM
-   input [15:0] HF,
-   input [15:0] BF,
-   input [15:0] TF,
+    input [15:0] HF,
+    input [15:0] BF,
+    input [15:0] TF,
     input clk,                   // Main clock signal
     input reset,                 // Reset signal
     output reg [47:0] flit_out,      // 256-bit output flit to FIFO

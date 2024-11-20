@@ -12,8 +12,8 @@ module DePacketizer (
             packet_end <= 1'b0;
         end else begin
             data_out <= flitoutde[31:16];
-            // Define packet_end condition without using TF directly
-            packet_end <= (flitoutde[47:32] == 16'hFFFF);  //try conditional statement here if this doesnt work
+            if((flitoutde[47:32] == 16'hFFFF))
+                packet_end <= 1'b1;  
         end
     end
 endmodule

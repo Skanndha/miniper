@@ -13,7 +13,9 @@ module DePacketizer (
         end else begin
             data_out <= flitoutde[31:16];
             if((flitoutde[47:32] == 16'hFFFF))
-                packet_end <= 1'b1;  
+                packet_end <= 1'b1; 
+            else 
+                packet_end <= 1'b0;
         end
     end
 endmodule
